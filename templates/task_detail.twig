@@ -1,0 +1,48 @@
+{% extends "layout.twig" %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="bg-white p-4 rounded shadow-sm border">
+        <h3 class="mb-3">{{ task.title }}</h3>
+
+        <div class="mb-2">
+            <strong>Status:</strong>
+            <span class="badge bg-warning text-dark">{{ task.status }}</span>
+        </div>
+
+        <div class="mb-2">
+            <strong>Created At:</strong> {{ task.created_at }}
+        </div>
+
+        <div class="mb-2">
+            <strong>Deadline:</strong> {{ task.deadline }}
+        </div>
+
+        <div class="mb-3">
+            <strong>Description:</strong>
+            <p>{{ task.description }}</p>
+        </div>
+
+        <div class="mb-3">
+            <strong>Tags:</strong>
+            {% for tag in task.tags %}
+                <span class="badge bg-info text-dark">{{ tag }}</span>
+            {% endfor %}
+        </div>
+
+        <div class="mb-3">
+            <strong>Likes:</strong> {{ task.likes }} |
+            <strong>Comments:</strong> {{ task.comments }}
+        </div>
+
+        <div class="mb-3">
+            <strong>Members:</strong>
+            {% for img in task.members %}
+                <img src="{{ img }}" class="rounded-circle me-1" width="32" height="32" alt="member">
+            {% endfor %}
+        </div>
+
+        <a href="/dashboard" class="btn btn-secondary">← Back to Dashboard</a>
+    </div>
+</div>
+{% endblock %}

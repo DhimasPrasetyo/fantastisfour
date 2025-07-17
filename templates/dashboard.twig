@@ -1,0 +1,138 @@
+{% extends "layout.twig" %}
+
+{% block content %}
+<section class="kanban-board">
+
+    <!-- Header -->
+    <div class="bg-light-subtle py-3 px-4 border-bottom">
+        <div class="container-fluid">
+            <h4 class="fw-semibold mb-0">Kanban Board</h4>
+        </div>
+    </div>
+
+    <!-- Control: New Board + Sort + Search -->
+    <div class="container-fluid mt-2">
+        <div class="bg-white p-3 rounded shadow-sm border d-flex flex-wrap justify-content-between align-items-center gap-3">
+            <div class="d-flex gap-2 flex-wrap">
+                <a href="/dashboard/board/create" class="btn btn-primary">+ New Board</a>
+                <select class="form-select w-auto">
+                    <option selected>Sort By</option>
+                    <option>Deadline</option>
+                    <option>Priority</option>
+                </select>
+            </div>
+
+            <div class="d-flex gap-2 align-items-center">
+                <input type="text" class="form-control" placeholder="Search task...">
+                <button class="btn btn-outline-secondary">Search</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dummy Data Tasks -->
+    {% set tasks = [
+        {
+            id: 1,
+            title: 'New Dashboard Design',
+            description: 'Desain baru untuk dashboard admin.',
+            status: 'NEW',
+            created_at: '2025-05-28',
+            deadline: '2025-07-17',
+            tags: ['#SPK-01', 'UI/UX'],
+            likes: 12,
+            comments: 2
+        },
+        {
+            id: 2,
+            title: 'Perbaiki Validasi Form',
+            description: 'Validasi field input untuk form login.',
+            status: 'TODO',
+            created_at: '2025-06-01',
+            deadline: '2025-07-20',
+            tags: ['#SPK-02', 'Backend'],
+            likes: 5,
+            comments: 1
+        },
+        {
+            id: 3,
+            title: 'Integrasi API Google Maps',
+            description: 'Integrasikan lokasi pada halaman proker.',
+            status: 'ON GOING',
+            created_at: '2025-07-01',
+            deadline: '2025-07-21',
+            tags: ['#SPK-03', 'API'],
+            likes: 8,
+            comments: 0
+        },
+        {
+            id: 4,
+            title: 'Uji Coba Fitur Upload',
+            description: 'Testing dan review fitur unggah berkas.',
+            status: 'IN REVIEW',
+            created_at: '2025-07-05',
+            deadline: '2025-07-22',
+            tags: ['#SPK-04', 'Testing'],
+            likes: 6,
+            comments: 3
+        },
+        {
+            id: 5,
+            title: 'Deployment Final',
+            description: 'Rilis final aplikasi ke server produksi.',
+            status: 'COMPLETED',
+            created_at: '2025-06-30',
+            deadline: '2025-07-10',
+            tags: ['#SPK-05', 'DevOps'],
+            likes: 15,
+            comments: 5
+        }
+    ] %}
+
+    {% set columns = ['NEW', 'TODO', 'ON GOING', 'IN REVIEW', 'COMPLETED'] %}
+
+    <!-- Kanban Area -->
+    <div class="container-fluid mt-4 px-0">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
+            {% for status in columns %}
+            <div class="col">
+                <div class="kanban-column bg-white p-3 rounded shadow-sm border h-100 d-flex flex-column">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h6 class="mb-0">{{ status }}</h6>
+                        <a href="/dashboard/task/create?status={{ status }}" class="text-primary small">+ Add Task</a>
+                    </div>
+
+                    {% for task in tasks %}
+                        {% if task.status == status %}
+                        <div class="card border-0 p-3 mb-3 shadow-sm flex-grow-1">
+                            <div class="small text-muted mb-2">
+                                Created - {{ task.created_at }} • 
+                                <span class="float-end">Due: {{ task.deadline }}</span>
+                            </div>
+                            <div class="mb-2">
+                                {% for tag in task.tags %}
+                                    <span class="badge bg-secondary">{{ tag }}</span>
+                                {% endfor %}
+                            </div>
+                            <strong class="d-block mb-1">{{ task.title }}</strong>
+                            <p class="small text-muted mb-2">{{ task.description }}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="d-flex align-items-center gap-2">
+                                    <i class="bi bi-hand-thumbs-up"></i><span class="small">{{ task.likes }}</span>
+                                    <i class="bi bi-chat-dots ms-2"></i><span class="small">{{ task.comments }}</span>
+                                </div>
+                                <div class="d-flex">
+                                    <img src="/img/user1.jpg" class="rounded-circle" width="24" height="24" alt="">
+                                </div>
+                            </div>
+                            <a href="/dashboard/task/{{ task.id }}" class="btn btn-light btn-sm w-100 text-primary border border-primary mt-2">View More</a>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+</section>
+{% endblock %}
